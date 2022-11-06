@@ -10,7 +10,7 @@ class PlaceDto {
     name!: string
     address!: string
     latitude!: number
-    longtitude!: number
+    longitude!: number
     region!: Region
     tags!: string[]
 }
@@ -28,7 +28,7 @@ export class RecommendDto {
                 name: info.name,
                 placeType: info.placeType,
                 latitude: info.latitude,
-                longtitude: info.longtitude,
+                longitude: info.longtitude,
                 address: info.address || "제주 제주시",
                 region: {
                     small: info.travelapp_region.region_small,
@@ -38,7 +38,7 @@ export class RecommendDto {
                 tags: info.travelapp_tagtoplace.map(tToP => tToP.travelapp_placetag.name)
             }))
             .slice(0, 15);
-            
+
         return {
             food: getPlaces("FOOD"),
             cafe: getPlaces("CAFE"),
