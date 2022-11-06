@@ -36,8 +36,9 @@ export class RecommendDto {
                     position: info.travelapp_region.position
                 },
                 tags: info.travelapp_tagtoplace.map(tToP => tToP.travelapp_placetag.name)
-            })
-        )
+            }))
+            .slice(0, 15);
+            
         return {
             food: getPlaces("FOOD"),
             cafe: getPlaces("CAFE"),
