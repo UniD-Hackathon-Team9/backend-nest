@@ -58,9 +58,11 @@ export class RecommendService {
   private getPositions(personality: string): string[]{
     const positions = personality === "b" 
       ? [
-        [1, 2], [2, 3], [3, 4], [4, 1]
-      ][1 + Math.floor(Math.random() * 4)]
-      : [2 + Math.floor(Math.random() * 3)]
+        [1, 2, 3], [2, 3, 4], [1, 3, 4]
+      ][Math.floor(Math.random() * 3)]
+      : [
+        [1, 2], [2, 3], [3, 4], [1, 4]
+      ][Math.floor(Math.random() * 4)]
     return positions.map(String)
   }
 
@@ -95,9 +97,9 @@ export class RecommendService {
       9: [8, 10],
       10: [7, 9],
     };
-    return [
+    return Array.from(new Set([
       ...(TARGET_TAGS[personality] ?? []),
       ...preferences.flatMap(p => TARGET_TAGS[p] || [])
-    ]
+    ]))
   }
 }
