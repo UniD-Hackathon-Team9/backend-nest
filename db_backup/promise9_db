@@ -1,0 +1,598 @@
+-- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
+--
+-- Host: localhost    Database: promise9
+-- ------------------------------------------------------
+-- Server version	8.0.31-0ubuntu0.22.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `account_emailaddress`
+--
+
+DROP TABLE IF EXISTS `account_emailaddress`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `account_emailaddress` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(254) NOT NULL,
+  `verified` tinyint(1) NOT NULL,
+  `primary` tinyint(1) NOT NULL,
+  `user_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `account_emailaddress_user_id_2c513194_fk_userapp_user_id` (`user_id`),
+  CONSTRAINT `account_emailaddress_user_id_2c513194_fk_userapp_user_id` FOREIGN KEY (`user_id`) REFERENCES `userapp_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account_emailaddress`
+--
+
+LOCK TABLES `account_emailaddress` WRITE;
+/*!40000 ALTER TABLE `account_emailaddress` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account_emailaddress` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `account_emailconfirmation`
+--
+
+DROP TABLE IF EXISTS `account_emailconfirmation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `account_emailconfirmation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `sent` datetime(6) DEFAULT NULL,
+  `key` varchar(64) NOT NULL,
+  `email_address_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key` (`key`),
+  KEY `account_emailconfirm_email_address_id_5b7f8c58_fk_account_e` (`email_address_id`),
+  CONSTRAINT `account_emailconfirm_email_address_id_5b7f8c58_fk_account_e` FOREIGN KEY (`email_address_id`) REFERENCES `account_emailaddress` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account_emailconfirmation`
+--
+
+LOCK TABLES `account_emailconfirmation` WRITE;
+/*!40000 ALTER TABLE `account_emailconfirmation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account_emailconfirmation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_group`
+--
+
+DROP TABLE IF EXISTS `auth_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_group` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group`
+--
+
+LOCK TABLES `auth_group` WRITE;
+/*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_group_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_group_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_group_permissions` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `group_id` int NOT NULL,
+  `permission_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
+  KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
+  CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+LOCK TABLES `auth_group_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_permission`
+--
+
+DROP TABLE IF EXISTS `auth_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_permission` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `content_type_id` int NOT NULL,
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
+  CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_permission`
+--
+
+LOCK TABLES `auth_permission` WRITE;
+/*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add content type',4,'add_contenttype'),(14,'Can change content type',4,'change_contenttype'),(15,'Can delete content type',4,'delete_contenttype'),(16,'Can view content type',4,'view_contenttype'),(17,'Can add session',5,'add_session'),(18,'Can change session',5,'change_session'),(19,'Can delete session',5,'delete_session'),(20,'Can view session',5,'view_session'),(21,'Can add user',6,'add_user'),(22,'Can change user',6,'change_user'),(23,'Can delete user',6,'delete_user'),(24,'Can view user',6,'view_user'),(25,'Can add place',7,'add_place'),(26,'Can change place',7,'change_place'),(27,'Can delete place',7,'delete_place'),(28,'Can view place',7,'view_place'),(29,'Can add place tag',8,'add_placetag'),(30,'Can change place tag',8,'change_placetag'),(31,'Can delete place tag',8,'delete_placetag'),(32,'Can view place tag',8,'view_placetag'),(33,'Can add region',9,'add_region'),(34,'Can change region',9,'change_region'),(35,'Can delete region',9,'delete_region'),(36,'Can view region',9,'view_region'),(37,'Can add tag to place',10,'add_tagtoplace'),(38,'Can change tag to place',10,'change_tagtoplace'),(39,'Can delete tag to place',10,'delete_tagtoplace'),(40,'Can view tag to place',10,'view_tagtoplace'),(41,'Can add place image',11,'add_placeimage'),(42,'Can change place image',11,'change_placeimage'),(43,'Can delete place image',11,'delete_placeimage'),(44,'Can view place image',11,'view_placeimage'),(45,'Can add user',12,'add_user'),(46,'Can change user',12,'change_user'),(47,'Can delete user',12,'delete_user'),(48,'Can view user',12,'view_user'),(49,'Can add site',13,'add_site'),(50,'Can change site',13,'change_site'),(51,'Can delete site',13,'delete_site'),(52,'Can view site',13,'view_site'),(53,'Can add email address',14,'add_emailaddress'),(54,'Can change email address',14,'change_emailaddress'),(55,'Can delete email address',14,'delete_emailaddress'),(56,'Can view email address',14,'view_emailaddress'),(57,'Can add email confirmation',15,'add_emailconfirmation'),(58,'Can change email confirmation',15,'change_emailconfirmation'),(59,'Can delete email confirmation',15,'delete_emailconfirmation'),(60,'Can view email confirmation',15,'view_emailconfirmation'),(61,'Can add social account',16,'add_socialaccount'),(62,'Can change social account',16,'change_socialaccount'),(63,'Can delete social account',16,'delete_socialaccount'),(64,'Can view social account',16,'view_socialaccount'),(65,'Can add social application',17,'add_socialapp'),(66,'Can change social application',17,'change_socialapp'),(67,'Can delete social application',17,'delete_socialapp'),(68,'Can view social application',17,'view_socialapp'),(69,'Can add social application token',18,'add_socialtoken'),(70,'Can change social application token',18,'change_socialtoken'),(71,'Can delete social application token',18,'delete_socialtoken'),(72,'Can view social application token',18,'view_socialtoken');
+/*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_admin_log`
+--
+
+DROP TABLE IF EXISTS `django_admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_admin_log` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `action_time` datetime(6) NOT NULL,
+  `object_id` longtext,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint unsigned NOT NULL,
+  `change_message` longtext NOT NULL,
+  `content_type_id` int DEFAULT NULL,
+  `user_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_content_type_id_c4bce8eb_fk_django_co` (`content_type_id`),
+  KEY `django_admin_log_user_id_c564eba6_fk_userapp_user_id` (`user_id`),
+  CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `django_admin_log_user_id_c564eba6_fk_userapp_user_id` FOREIGN KEY (`user_id`) REFERENCES `userapp_user` (`id`),
+  CONSTRAINT `django_admin_log_chk_1` CHECK ((`action_flag` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_admin_log`
+--
+
+LOCK TABLES `django_admin_log` WRITE;
+/*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+INSERT INTO `django_admin_log` VALUES (1,'2022-11-06 03:00:33.823774','2','127.0.0.1:8000',1,'[{\"added\": {}}]',13,4),(2,'2022-11-06 03:00:46.012586','1','promise_9',1,'[{\"added\": {}}]',17,4);
+/*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_content_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_content_type`
+--
+
+LOCK TABLES `django_content_type` WRITE;
+/*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
+INSERT INTO `django_content_type` VALUES (14,'account','emailaddress'),(15,'account','emailconfirmation'),(1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(12,'auth','user'),(4,'contenttypes','contenttype'),(5,'sessions','session'),(13,'sites','site'),(16,'socialaccount','socialaccount'),(17,'socialaccount','socialapp'),(18,'socialaccount','socialtoken'),(7,'travelapp','place'),(11,'travelapp','placeimage'),(8,'travelapp','placetag'),(9,'travelapp','region'),(10,'travelapp','tagtoplace'),(6,'userapp','user');
+/*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_migrations`
+--
+
+DROP TABLE IF EXISTS `django_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_migrations` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_migrations`
+--
+
+LOCK TABLES `django_migrations` WRITE;
+/*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
+INSERT INTO `django_migrations` VALUES (1,'userapp','0001_initial','2022-11-05 15:47:22.679438'),(2,'contenttypes','0001_initial','2022-11-05 15:47:22.969217'),(3,'admin','0001_initial','2022-11-05 15:47:23.518769'),(4,'admin','0002_logentry_remove_auto_add','2022-11-05 15:47:23.544354'),(5,'admin','0003_logentry_add_action_flag_choices','2022-11-05 15:47:23.583677'),(6,'contenttypes','0002_remove_content_type_name','2022-11-05 15:47:23.835857'),(7,'auth','0001_initial','2022-11-05 15:47:24.721659'),(8,'auth','0002_alter_permission_name_max_length','2022-11-05 15:47:24.885579'),(9,'auth','0003_alter_user_email_max_length','2022-11-05 15:47:24.917594'),(10,'auth','0004_alter_user_username_opts','2022-11-05 15:47:24.981583'),(11,'auth','0005_alter_user_last_login_null','2022-11-05 15:47:25.019431'),(12,'auth','0006_require_contenttypes_0002','2022-11-05 15:47:25.061305'),(13,'auth','0007_alter_validators_add_error_messages','2022-11-05 15:47:25.091298'),(14,'auth','0008_alter_user_username_max_length','2022-11-05 15:47:25.122130'),(15,'auth','0009_alter_user_last_name_max_length','2022-11-05 15:47:25.154316'),(16,'auth','0010_alter_group_name_max_length','2022-11-05 15:47:25.211955'),(17,'auth','0011_update_proxy_permissions','2022-11-05 15:47:25.277624'),(18,'auth','0012_alter_user_first_name_max_length','2022-11-05 15:47:25.306639'),(19,'sessions','0001_initial','2022-11-05 15:47:25.435711'),(20,'travelapp','0001_initial','2022-11-05 15:47:26.215748'),(21,'userapp','0002_user_is_admin','2022-11-05 17:32:14.831209'),(22,'userapp','0003_rename_is_admin_user_is_staff','2022-11-05 17:37:17.182894'),(23,'userapp','0004_user_is_admin_user_is_superuser','2022-11-05 17:39:08.051451'),(24,'travelapp','0002_alter_place_name_alter_region_region_small','2022-11-05 22:19:51.455770'),(25,'travelapp','0003_place_address','2022-11-05 22:19:51.605824'),(26,'travelapp','0004_alter_place_name','2022-11-05 22:19:51.878410'),(27,'travelapp','0005_alter_place_name','2022-11-05 22:19:52.017485'),(28,'travelapp','0006_place_placetype','2022-11-05 22:30:17.354708'),(29,'travelapp','0007_remove_place_description','2022-11-05 22:31:13.219774'),(30,'account','0001_initial','2022-11-06 02:57:30.282462'),(31,'account','0002_email_max_length','2022-11-06 02:57:30.459985'),(32,'sites','0001_initial','2022-11-06 02:57:30.620558'),(33,'sites','0002_alter_domain_unique','2022-11-06 02:57:30.977634'),(34,'socialaccount','0001_initial','2022-11-06 02:57:32.773256'),(35,'socialaccount','0002_token_max_lengths','2022-11-06 02:57:32.969862'),(36,'socialaccount','0003_extra_data_default_dict','2022-11-06 02:57:33.138307');
+/*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_session`
+--
+
+DROP TABLE IF EXISTS `django_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime(6) NOT NULL,
+  PRIMARY KEY (`session_key`),
+  KEY `django_session_expire_date_a5c62663` (`expire_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_session`
+--
+
+LOCK TABLES `django_session` WRITE;
+/*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+INSERT INTO `django_session` VALUES ('y9ilq97vuax4di348fgigca006bzqbuo','.eJxVjEEOwiAQRe_C2pABAcGl-56BDMwgVUOT0q6MdzckXej2v_f-W0Tctxr3zmucSVyFEaffLWF-chuAHtjui8xL29Y5yaHIg3Y5LcSv2-H-HVTsddSAKXBiKBZIa60IDCjrlAlW21AyembPKigPwbI22TlfPDlV3OVcUHy-2wk3ew:1orVrh:UTYsVt1rC7DAL9Q9e3Yw4cPi2L1kyYXvyyhjfyfW37E','2022-11-20 02:58:29.110281'),('zdo4hsbj1nd5xyol6v7k330b2jfp4rau','.eJxVjDEOAiEQRe9CbQjCIGBp7xnIwAyyaiBZdivj3XWTLbT9773_EhHXpcZ18BwnEmdhxOF3S5gf3DZAd2y3LnNvyzwluSlyp0NeO_Hzsrt_BxVH_dbJWkgFjqo4CJi0L06XwgwGLBMGCgGRlVfGnRJ6BnSKNQWE4sllEO8P-o44pQ:1orN7D:acMhSWh8Xrc8Ma-2U4YdLau-_dH5RxqrOSzfoAO8Moo','2022-11-19 17:37:55.869355');
+/*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_site`
+--
+
+DROP TABLE IF EXISTS `django_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_site` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `domain` varchar(100) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_site_domain_a2e37b91_uniq` (`domain`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_site`
+--
+
+LOCK TABLES `django_site` WRITE;
+/*!40000 ALTER TABLE `django_site` DISABLE KEYS */;
+INSERT INTO `django_site` VALUES (1,'example.com','example.com'),(2,'127.0.0.1:8000','127.0.0.1:8000');
+/*!40000 ALTER TABLE `django_site` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `socialaccount_socialaccount`
+--
+
+DROP TABLE IF EXISTS `socialaccount_socialaccount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `socialaccount_socialaccount` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `provider` varchar(30) NOT NULL,
+  `uid` varchar(191) NOT NULL,
+  `last_login` datetime(6) NOT NULL,
+  `date_joined` datetime(6) NOT NULL,
+  `extra_data` longtext NOT NULL,
+  `user_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `socialaccount_socialaccount_provider_uid_fc810c6e_uniq` (`provider`,`uid`),
+  KEY `socialaccount_socialaccount_user_id_8146e70c_fk_userapp_user_id` (`user_id`),
+  CONSTRAINT `socialaccount_socialaccount_user_id_8146e70c_fk_userapp_user_id` FOREIGN KEY (`user_id`) REFERENCES `userapp_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `socialaccount_socialaccount`
+--
+
+LOCK TABLES `socialaccount_socialaccount` WRITE;
+/*!40000 ALTER TABLE `socialaccount_socialaccount` DISABLE KEYS */;
+/*!40000 ALTER TABLE `socialaccount_socialaccount` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `socialaccount_socialapp`
+--
+
+DROP TABLE IF EXISTS `socialaccount_socialapp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `socialaccount_socialapp` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `provider` varchar(30) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `client_id` varchar(191) NOT NULL,
+  `secret` varchar(191) NOT NULL,
+  `key` varchar(191) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `socialaccount_socialapp`
+--
+
+LOCK TABLES `socialaccount_socialapp` WRITE;
+/*!40000 ALTER TABLE `socialaccount_socialapp` DISABLE KEYS */;
+INSERT INTO `socialaccount_socialapp` VALUES (1,'kakao','promise_9','f6fd621506d6d9f20b0c3ba4ac557814','vcK6kgOOT29wVVPPSJkWbRekaYnTYtFS','');
+/*!40000 ALTER TABLE `socialaccount_socialapp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `socialaccount_socialapp_sites`
+--
+
+DROP TABLE IF EXISTS `socialaccount_socialapp_sites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `socialaccount_socialapp_sites` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `socialapp_id` int NOT NULL,
+  `site_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `socialaccount_socialapp_sites_socialapp_id_site_id_71a9a768_uniq` (`socialapp_id`,`site_id`),
+  KEY `socialaccount_socialapp_sites_site_id_2579dee5_fk_django_site_id` (`site_id`),
+  CONSTRAINT `socialaccount_social_socialapp_id_97fb6e7d_fk_socialacc` FOREIGN KEY (`socialapp_id`) REFERENCES `socialaccount_socialapp` (`id`),
+  CONSTRAINT `socialaccount_socialapp_sites_site_id_2579dee5_fk_django_site_id` FOREIGN KEY (`site_id`) REFERENCES `django_site` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `socialaccount_socialapp_sites`
+--
+
+LOCK TABLES `socialaccount_socialapp_sites` WRITE;
+/*!40000 ALTER TABLE `socialaccount_socialapp_sites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `socialaccount_socialapp_sites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `socialaccount_socialtoken`
+--
+
+DROP TABLE IF EXISTS `socialaccount_socialtoken`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `socialaccount_socialtoken` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `token` longtext NOT NULL,
+  `token_secret` longtext NOT NULL,
+  `expires_at` datetime(6) DEFAULT NULL,
+  `account_id` int NOT NULL,
+  `app_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `socialaccount_socialtoken_app_id_account_id_fca4e0ac_uniq` (`app_id`,`account_id`),
+  KEY `socialaccount_social_account_id_951f210e_fk_socialacc` (`account_id`),
+  CONSTRAINT `socialaccount_social_account_id_951f210e_fk_socialacc` FOREIGN KEY (`account_id`) REFERENCES `socialaccount_socialaccount` (`id`),
+  CONSTRAINT `socialaccount_social_app_id_636a42d7_fk_socialacc` FOREIGN KEY (`app_id`) REFERENCES `socialaccount_socialapp` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `socialaccount_socialtoken`
+--
+
+LOCK TABLES `socialaccount_socialtoken` WRITE;
+/*!40000 ALTER TABLE `socialaccount_socialtoken` DISABLE KEYS */;
+/*!40000 ALTER TABLE `socialaccount_socialtoken` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelapp_place`
+--
+
+DROP TABLE IF EXISTS `travelapp_place`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `travelapp_place` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `latitude` int NOT NULL,
+  `longtitude` int NOT NULL,
+  `region_id` bigint NOT NULL,
+  `address` longtext,
+  `placeType` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `travelapp_place_name_5e130e6d_uniq` (`name`),
+  KEY `travelapp_place_region_id_eea18924_fk_travelapp_region_id` (`region_id`),
+  CONSTRAINT `travelapp_place_region_id_eea18924_fk_travelapp_region_id` FOREIGN KEY (`region_id`) REFERENCES `travelapp_region` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=345 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelapp_place`
+--
+
+LOCK TABLES `travelapp_place` WRITE;
+/*!40000 ALTER TABLE `travelapp_place` DISABLE KEYS */;
+INSERT INTO `travelapp_place` VALUES (1,'도민상회 제주협재한림본점',238372,92177,101,'제주특별자치도 제주시 한림읍 한림로3길 8','FOOD'),(2,'미풍해장국 한림점',239127,92568,101,'제주특별자치도 제주시 한림읍 한림상로 207 미풍해장국한림점 1층','FOOD'),(3,'오만정성 제주협재점',237411,89519,101,'제주특별자치도 제주시 한림읍 협재리 1087 KR 오만정성 1층','FOOD'),(4,'탐나쑥빵',239099,92694,101,'제주특별자치도 제주시 한림읍 대림리 1789','FOOD'),(5,'우무',238013,91375,101,'제주특별자치도 제주시 한림읍 한림로 542-1','FOOD'),(18,'호텔샌드',236502,90064,101,'제주특별자치도 제주시 한림읍 한림로 339','FOOD'),(19,'카페 이면',235198,89502,101,'제주특별자치도 제주시 한림읍 금능리 1544','CAFE'),(20,'스타벅스 제주협재점',236504,90058,101,'제주특별자치도 제주시 한림읍 협재리 2445-1 KR','CAFE'),(21,'금능해수욕장',235939,89572,101,'제주특별자치도 제주시 금능해수욕장','SPOT'),(22,'금오름',242513,85602,101,'제주특별자치도 제주시 한림읍 금악리 산1-1','SPOT'),(23,'제주맥주',236505,86134,101,'제주특별자치도 제주시 한림읍 금능농공길 62-11 KR','SPOT'),(24,'한림공원',236476,89565,101,'제주특별자치도 제주시 한림읍 한림로 300','SPOT'),(25,'협재해수욕장',236449,90113,101,'제주특별자치도 제주시 협재해수욕장','SPOT'),(26,'제주광해 애월',250615,100249,102,'제주특별자치도 제주시 특별자치도 애월해안로 867 KR','FOOD'),(27,'해송수산물회센타',244074,97983,102,'제주특별자치도 제주시 애월읍 애월리 1819-30 KR','FOOD'),(28,'이춘옥원조고등어쌈밥 제주애월본점',253244,100346,102,'제주특별자치도 제주시 애월읍 일주서로 7213','FOOD'),(29,'새빌',247864,86605,102,'제주특별자치도 제주시 애월읍 평화로 1529','FOOD'),(30,'우영담',243713,97759,102,'제주특별자치도 제주시 애월읍 애월리 2113-2','FOOD'),(99,'우도 해광식당',303292,102422,107,'제주특별자치도 제주시 우도면 연평리 1287','FOOD'),(100,'물꼬해녀의집',302640,103015,107,'제주특별자치도 제주시 우도면 연평리 891','FOOD'),(101,'우도 해녀식당',302555,102557,107,'제주특별자치도 제주시 우도면 연평리 2308-3 우도해녀식당','FOOD'),(102,'온오프',303711,102372,107,'제주특별자치도 제주시 우도면 연평리 690 온오프','FOOD'),(103,'블랑로쉐',303389,102675,107,'제주특별자치도 제주시 우도면 연평리 712-1','FOOD'),(119,'봉끄랑',302191,100299,107,'제주특별자치도 제주시 우도면 연평리 2649-1','CAFE'),(120,'안녕육지사람',303321,102614,107,'제주특별자치도 제주시 우도면 연평리 1197-4','CAFE'),(121,'달콤아재',303339,102424,107,'제주특별자치도 제주시 우도면 연평리 1290-1 1층 달콤아재','CAFE'),(122,'훈데르트윈즈',303107,100047,107,'제주특별자치도 제주시 우도면 연평리 1729-1 훈데르트윈즈','CAFE'),(123,'우도',303644,101017,107,'제주특별자치도 제주시 우도면','SPOT'),(124,'검멀레해수욕장',304213,100627,107,'제주특별자치도 제주시 우도면 연평리','SPOT'),(125,'산호해수욕장',302008,101211,107,'제주특별자치도 제주시 우도면','SPOT'),(126,'우도봉',303939,100066,107,'제주특별자치도 제주시 우도면 연평리 산17','SPOT'),(127,'하하호호',302515,103253,107,'제주특별자치도 제주시 우도면 연평리 859 하하호호','SPOT'),(128,'제주앞바다횟집',262277,103308,114,'제주특별자치도 제주시 용담1동 431','SPOT'),(129,'더비치크랩 제주공항점',262264,103295,114,'제주특별자치도 제주시 용담1동 432 더비치크랩','SPOT'),(130,'용두암 엄마 해장국',261426,103129,114,'제주특별자치도 제주시 용담삼동 519-9','SPOT'),(131,'충민정',262039,101718,114,'제주특별자치도 제주시 용담1동 2818-2','SPOT'),(132,'다랑쉬',261711,102430,115,'제주특별자치도 제주시 용담2동 626-10','CAFE'),(133,'듀포레',260858,103510,115,'제주특별자치도 제주시 용담삼동 1092 듀포레','CAFE'),(134,'스타벅스 제주서해안로DT점',261175,103302,115,'제주특별자치도 제주시 용담삼동 1020-1','CAFE'),(135,'용두암',261954,103223,115,'제주특별자치도 제주시 용담2동 483','SPOT'),(136,'용연구름다리',262178,103085,115,'제주특별자치도 제주시 용담이동 2581','SPOT'),(137,'스타벅스 제주용담DT점',259405,102845,115,'제주특별자치도 제주시 용담삼동 2572-4 화이트하우스','CAFE'),(139,'파리바게뜨 제주국제공항점',260453,102119,114,'제주특별자치도 제주시 용담이동 2002 ( , 제주국제공항 3층)','CAFE'),(140,'메리밀Merry_Meal',280806,76491,84,'제주특별자치도 서귀포시 남원읍 남원리 128-9 2층','SPOT'),(141,'공천포 식당',273728,75367,84,'제주특별자치도 서귀포시 남원읍 신례리 27-5 공천포식당','SPOT'),(142,'섬소나이 위미점',275152,76083,84,'제주특별자치도 서귀포시 남원읍 위미리 2917 2층 섬소나이','SPOT'),(143,'모노클제주',277647,76036,84,'제주특별자치도 서귀포시 남원읍 위미리 745-4','CAFE'),(144,'범일분식',280673,76613,84,'제주특별자치도 서귀포시 남원읍 남원리 139-9','SPOT'),(146,'알맞은 시간',285572,79667,84,'제주특별자치도 서귀포시 남원읍 신흥리 274-3','CAFE'),(147,'로빙화',279954,76254,84,'제주특별자치도 서귀포시 남원읍 남원리 1398-7','CAFE'),(148,'카페 미깡',271644,76839,84,'제주특별자치도 서귀포시 남원읍 하례리 964-2 달달미깡감귤밭','CAFE'),(149,'CAFE EPL',275086,76325,84,'제주특별자치도 서귀포시 남원읍 위미리 3166-1','CAFE'),(150,'휴애리자연생활공원',273031,80048,84,'제주특별자치도 서귀포시 남원읍 신례리 2081','SPOT'),(151,'큰엉해안경승지',279406,76050,84,'제주특별자치 서귀포시 남원읍 남원리 2379-3','SPOT'),(152,'제주동백수목원',277045,76348,84,'제주특별자치도 서귀포시 남원읍 위미리 927','SPOT'),(153,'코코몽에코파크 제주점',279857,76258,84,'제주특별자치도 서귀포시 남원읍 남원리 2380 제주코코몽에코파크','SPOT'),(154,'동백포레스트',273185,79132,84,'제주특별자치도 서귀포시 남원읍 신례리 1767','SPOT'),(155,'미영이네 식당',237041,70507,85,'제주특별자치도 서귀포시 대정읍 하모리 770-29','SPOT'),(156,'트라몬토 제주모슬포본점',237042,70477,85,'제주특별자치도 서귀포시 대정읍 하모리 770-59 트라몬토 제주모슬포본점','SPOT'),(157,'옥돔 식당',236968,70760,85,'제주특별자치도 서귀포시 대정읍 하모리 1067-23','SPOT'),(158,'인스밀',235165,72842,85,'제주특별자치도 서귀포시 대정읍 일과리 1291 1층','CAFE'),(159,'어린왕자감귤밭',240094,74405,85,'제주특별자치도 서귀포시 대정읍 안성리 1701','CAFE'),(162,'미쁜제과',230643,76323,85,'제주특별자치도 서귀포시 대정읍 신도리 2349-13 미쁜제과','CAFE'),(163,'사일리커피',239443,68497,85,'제주특별자치도 서귀포시 대정읍 상모리 1670-3','CAFE'),(164,'와토커피',237686,71359,85,'제주특별자치도 서귀포시 대정읍 상모리 3854-5','CAFE'),(165,'송악산',240737,68379,85,'제주특별자치도 서귀포시 대정읍 상모리 131','SPOT'),(166,'가파도',238714,65305,85,'제주특별자치도 서귀포시 대정읍 가파리','SPOT'),(167,'제주곶자왈도립공원',238878,78261,85,'제주특별자치도 서귀포시 대정읍 보성리 산1','SPOT'),(168,'마라도',238500,59493,85,'제주특별자치도 서귀포시 대정읍 가파리 600','SPOT'),(169,'노리매',240660,77641,85,'제주특별자치도 서귀포시 대정읍 구억리 654-1','SPOT'),(170,'중앙통닭',266315,73547,91,'제주특별자치도 서귀포시 중앙동 275-27 중앙통닭','SPOT'),(171,'중앙식당',245028,73584,87,'제주특별자치도 서귀포시 안덕면 화순리 1077-1 중앙식당','SPOT'),(172,'마농치킨 중앙통닭 2호점',266274,73690,87,'제주특별자치도 서귀포시 서귀동 278-10 싱싱회센타','SPOT'),(173,'마농치킨 중앙통닭 3호점',266346,73712,87,'제주특별자치도 서귀포시 서귀동 279-6','SPOT'),(174,'메가MGC커피 서귀포중앙점',266164,73614,87,'제주특별자치도 서귀포시 서귀동 291-43','CAFE'),(177,'모슬포중앙시장',237498,70973,85,'제주특별자치도 서귀포시 대정읍 하모리 824-8','SPOT'),(178,'놀숲 서귀포중앙점',266159,73396,85,'제주특별자치도 서귀포시 서귀동 294-20 3층','SPOT'),(179,'여정다방',266150,73467,92,'제주특별자치도 서귀포시 천지동 294-26','CAFE'),(180,'천지 연폭포',265487,73318,92,'제주특별자치도 서귀포시 천지동 667-7','SPOT'),(181,'돌카롱 중문점',253378,74464,99,'제주특별자치도 서귀포시 중문동 1588-1 1층','CAFE'),(182,'챔피언R 롯데호텔 제주중문점',252078,73704,99,'제주특별자치도 서귀포시 색달동 2812-4 롯데호텔 6층','CAFE'),(183,'프랑제리 켄싱턴리조트 중문점',252291,73563,99,'제주특별자치도 서귀포시 색달동 2822-5','CAFE'),(184,'중문관광단지',252094,73604,99,'제주특별자치도 서귀포시 중문동','SPOT'),(185,'중문승마공원',255301,72944,99,'제주특별자치도 서귀포시 대포동 2270 제주하이랜드','SPOT'),(186,'오동여 식당',242828,153191,106,'제주특별자치도 제주시 추자면 대서리 7-1','SPOT'),(187,'고향향토장터',245638,151083,106,'제주특별자치도 제주시 추자면 신양리 434-9','SPOT'),(188,'신등대 낚시민박식당',242861,153141,106,'제주특별자치도 제주시 추자면 대서리 5-7 1층','SPOT'),(189,'유스테이추자 카페&민박',245858,151027,106,'제주특별자치도 제주시 추자면 신양리 434-34 유스테이추자','CAFE'),(190,'추자북경반점',244925,150736,106,'제주특별자치도 제주시 추자면 신양리 673-1','SPOT'),(191,'추자향기브런치카페',242642,153083,106,'제주특별자치도 제주시 추자면 대서리 144-2','SPOT'),(192,'유스테이추자카페&민박',245858,151027,106,'제주특별자치도 제주시 추자면 신양리 434-34 유스테이추자','CAFE'),(193,'인추자커피앤민박',242789,153187,106,'제주특별자치도 제주시 추자면 대서리 8-8','CAFE'),(194,'커피앤빵',242516,152991,106,'제주특별자치도 제주시 추자면 대서리 162','CAFE'),(195,'뚊 카페',242600,152897,106,'제주특별자치도 제주시 추자면 영흥리 367-10 1층','CAFE'),(196,'상추자도',242437,152789,106,'제주특별자치도 제주시 추자면 영흥리','SPOT'),(197,'추자도',243834,151802,106,'제주특별자치도 제주시 추자면 추자도','SPOT'),(198,'황경한의묘',246760,151497,106,'제주특별자치도 제주시 추자면 신양리 산20-1','SPOT'),(199,'모진이몽돌해변',246207,151148,106,'제주특별자치 제주시 추자면 신양리 56','SPOT'),(200,'최영장군사당',242655,153346,106,'제주특별자치도 제주시 추자면 대서리','SPOT'),(204,'우도 아름다운소풍',302607,102593,107,'제주특별자치도 제주시 우도면 연평리 988-1','SPOT'),(205,'회양과국수군',301908,101350,107,'제주특별자치도 제주시 우도면 연평리 2473-9','FOOD'),(206,'Jimmys natural icecream',304286,100660,107,'제주특별자치도 제주시 우도면 연평리 317-2','CAFE'),(207,'우도왕자이야기',302056,101243,107,'제주특별자치도 제주시 우도면 연평리 2516-2','CAFE'),(208,'우도 아이스크림연구소',303535,100242,107,'제주특별자치도 제주시 우도면 연평리 343-2 1층','CAFE'),(209,'뽀요요',302322,100304,107,'제주특별자치도 제주시 우도면 연평리 2652','SPOT'),(210,'우도슈퍼',304493,100785,107,'제주특별자치도 제주시 우도면 연평리 309','CAFE'),(214,'제주올레길1-1코스',301854,101615,107,'제주특별자치도 제주시 우도면 연평리 2473-1','SPOT'),(216,'한경가든',230110,80261,105,'제주특별자치도 제주시 한경면 고산리 3565-1 한경가든','SPOT'),(217,'크래커스 한경점',235168,83569,105,'제주특별자치도 제주시 한경면 조수리 1363-1','CAFE'),(218,'유가네한우곰탕 제주한경점',229272,78739,105,'제주특별자치도 제주시 한경면 고산리 3794-4','SPOT'),(219,'바다를본돼지 제주협재판포점',232488,86999,105,'제주특별자치도 제주시 한경면 판포리 2881-4 1층 바다를본돼지 제주협재판포점','SPOT'),(220,'울트라마린',233252,87402,105,'제주특별자치도 제주시 한경면 판포리 1611','CAFE'),(223,'클랭블루',230528,84730,105,'제주특별자치도 제주시 한경면 신창리 1293-1','CAFE'),(224,'귤당리 협재점',232319,86716,105,'제주특별자치도 제주시 한경면 판포리 2950 귤당리 카페','CAFE'),(225,'산노루 제주점',233874,83020,105,'제주특별자치도 제주시 한경면 조수리 2098-4 산노루','CAFE'),(226,'한경체육관',231121,79869,105,'제주특별자치도 제주시 한경면 고산리 1881-2','SPOT'),(227,'신창풍차해안도로',230043,84499,105,'제주특별자치도 제주시 한경면 신창리 1481-23','SPOT'),(228,'판포포구',232644,86973,105,'제주특별자치도 제주시 한경면 판포리 2877-3','SPOT'),(229,'제주현대미술관',238763,84043,105,'제주특별자치도 제주시 한경면 저지리 2114-63','SPOT'),(230,'환상숲곶자왈공원',238488,82146,105,'제주특별자치도 제주시 한경면 저지리 2848-2','SPOT'),(231,'구좌 비자림미담 월정리세화',289874,100570,103,'제주특별자치도 제주시 구좌읍 평대리 3200-4 6동','FOOD'),(232,'산도롱맨도롱 구좌 읍종달리점',298932,100636,103,'제주특별자치도 제주시 구좌읍 종달리 484-1 산도롱맨도롱','FOOD'),(233,'종달리수다뜰 구좌 통갈치구이조림',297339,100097,103,'제주특별자치도 제주시 구좌읍 종달리 2566-1 종달수다뜰','SPOT'),(234,'벵디 구좌 월정리 본점',292198,105237,103,'제주특별자치도 제주시 구좌읍 평대리 2031-2','SPOT'),(235,'돈구어 구좌 세화점',293761,103811,103,'제주특별자치도 제주시 구좌읍 세화리 3648-1 1층 돈구어 구좌세화점','SPOT'),(236,'구좌상회',279280,99619,104,'제주특별자치도 제주시 조천읍 선흘리 3983','CAFE'),(237,'풍림다방 송당점',287331,97988,103,'제주특별자치도 제주시 구좌읍 송당리 1377-1 풍림다방 송당점','CAFE'),(238,'블루보틀 제주 카페',284035,93742,103,'제주특별자치도 제주시 구좌읍 송당리 2656-6','CAFE'),(239,'카페모알보알 제주점',282083,107779,103,'제주특별자치도 제주시 구좌읍 김녕리 6159 카페 모알보알','CAFE'),(240,'몽그레 월정리점',288095,107708,103,'제주특별자치도 제주시 구좌읍 월정리 670-3 1, 2층','CAFE'),(241,'세화민속오일시장',294082,103925,103,'제주특별자치도 제주시 구좌읍 세화리 1500-44','SPOT'),(242,'구좌 우드스푼',293842,103988,103,'제주특별자치도 제주시 구좌읍 세화리 3642-5 1층','SPOT'),(243,'구좌체육관',285135,107371,103,'제주특별자치도 제주시 구좌읍 김녕리 497-1','SPOT'),(244,'김녕해수욕장',285009,107546,103,'제주특별자치도 제주시 구좌읍 김녕리','SPOT'),(245,'세화해수욕장',294378,103816,103,'제주특별자치도 제주시 구좌읍','SPOT'),(246,'어박사 함덕점',276936,106041,104,'제주특별자치도 제주시 조천읍 함덕리 225-3 2층 어박사','SPOT'),(247,'흑본오겹 함덕점',275629,106093,104,'제주특별자치도 제주시 조천읍 함덕리 3039-1','SPOT'),(248,'고집돌우럭 제주함덕점',276039,106108,104,'제주특별자치도 제주시 조천읍 함덕리 1020-2 2층','SPOT'),(249,'델문도',276558,106092,104,'제주특별자치도 제주시 조천읍 함덕리 1008-1','CAFE'),(250,'오드랑베이커리',276818,105908,104,'제주특별자치도 제주시 조천읍 함덕리 270-1','CAFE'),(253,'신촌덕인당',271890,104882,104,'제주특별자치도 제주시 조천읍 신촌리 2586-1','CAFE'),(254,'점점',271594,105469,104,'제주특별자치도 제주시 조천읍 신촌리 2384','CAFE'),(255,'5L2F',273207,100616,104,'제주특별자치도 제주시 조천읍 와흘리 1912-3','CAFE'),(256,'에코랜드 테마파크',276446,96289,104,'제주특별자치도 제주시 조천읍 대흘리 1221-1','SPOT'),(257,'함덕해수욕장',276649,106022,104,'제주특별자치도 제주시 조천읍 함덕리 산14-1','SPOT'),(258,'거문오름',280733,96458,104,'제주특별자치도 제주시 조천읍 선흘리 478','SPOT'),(260,'제주레포츠랜드',273630,99298,104,'제주특별자치도 제주시 조천읍 와흘리 870 -렌트카 이용시  네비게이션에 상호,주소,전화번호로 검색  상호 : 제주레포츠랜드  주소 : 제주시 조천읍 와흘상서2길47 (지번','SPOT'),(261,'신현대 식당',263561,103235,116,'제주특별자치도 제주시 건입동 1319-19 신현대식당','FOOD'),(262,'고집돌우럭 제주공항점',263452,103221,116,'제주특별자치도 제주시 건입동 1319-124','FOOD'),(263,'산지물',263400,103232,116,'제주특별자치도 제주시 건입동 1388-1','FOOD'),(264,'대돈 제주본점',263330,103180,116,'제주특별자치도 제주시 건입동 1399-1','FOOD'),(265,'산지해장국',263493,103236,116,'제주특별자치도 제주시 건입동 1319-121','FOOD'),(266,'브라보',263588,103105,116,'제주특별자치도 제주시 건입동 1147-1 1F BRAVO gelateria','CAFE'),(267,'노픈커피',264171,103406,116,'제주특별자치도 제주시 건입동 941-5 노픈커피','CAFE'),(268,'카페물결',265109,103745,116,'제주특별자치도 제주시 건입동 340-2','CAFE'),(269,'오블롱',263483,103220,116,'제주특별자치도 제주시 건입동 1319-26 1층','CAFE'),(270,'장산다방 제주휘슬락점',263386,103370,116,'제주특별자치도 제주시 건입동 1443-2','CAFE'),(271,'국립제주박물관',265381,102880,116,'제주특별자치도 제주시 건입동 261','SPOT'),(272,'탑동광장',263321,103424,116,'제주특별자치도 제주시 건입동 1444','SPOT'),(273,'제주항',264410,104224,116,'제주특별자치도 제주시 건입동','SPOT'),(274,'별도봉산책로',265306,103191,116,'제주특별자치도 제주시 건입동','SPOT'),(275,'흑돼지거리',263339,103176,116,'제주특별자치도 제주시 건입동','SPOT'),(276,'숙성도 노형본관',259403,99815,123,'제주특별자치도 제주시 노형동 941-2 1층','FOOD'),(277,'양대감 노형',259374,99876,123,'제주특별자치도 제주시 노형동 939-4 101호,102호','FOOD'),(278,'흑돈 시범이네',257729,99815,123,'제주특별자치도 제주시 노형동 2882-1 흑돈 시범이네','FOOD'),(279,'미스틱3도',259589,95916,123,'제주특별자치도 제주시 노형동 291-10 1층','CAFE'),(280,'돈사돈',257435,99160,123,'제주특별자치도 제주시 노형동 3086-3','FOOD'),(282,'제주 하멜',258572,99105,123,'제주특별자치도 제주시 노형동 3814-1','CAFE'),(283,'라온베이커리 남녕점',259146,100266,123,'제주특별자치도 제주시 노형동 1292-12 남녕마트 내 라온베이커리','CAFE'),(284,'히포파운드',257123,99910,123,'제주특별자치도 제주시 노형동 3744-1 1층','CAFE'),(285,'플랏포커피',259205,100031,123,'제주특별자치도 제주시 노형동 911-6','CAFE'),(286,'넥슨컴퓨터박물관',259451,98384,123,'제주특별자치도 제주시 노형동 86 넥슨컴퓨터박물관','SPOT'),(287,'브릭캠퍼스 제주',259387,96879,123,'제주특별자치도 제주시 노형동 244-1 브릭캠퍼스','SPOT'),(288,'신비의도로',259617,95947,123,'제주특별자치도 제주시 노형동 291-17','SPOT'),(289,'어승생승마장',259830,93190,123,'제주특별자치도 제주시 노형동 산14-1','FOOD'),(290,'제주광해 <b>애월</b>',250615,100249,102,'제주특별자치도 제주시 애월읍 하귀2리 2740-8 2층','FOOD'),(292,'이춘옥원조고등어쌈밥 제주<b>애월</b>본점',253244,100346,102,'제주특별자치도 제주시 애월읍 하귀1리 266-1','FOOD'),(296,'노을리',248953,99400,102,'제주특별자치도 제주시 애월읍 구엄리 1216','CAFE'),(297,'<b>카페</b> 노티드 제주',243072,97652,102,'제주특별자치도 제주시 애월읍 애월리 2527-3 1, 2층','CAFE'),(298,'<b>애월</b>빵공장앤<b>카페</b>',242285,96003,102,'제주특별자치도 제주시 애월읍 금성리 472-13','CAFE'),(299,'랜디스도넛 제주<b>애월</b>점',243229,97423,102,'제주특별자치도 제주시 애월읍 애월리 2471','CAFE'),(300,'새별오름',247364,86820,102,'제주특별자치도 제주시 애월읍 봉성리 산59-8','SPOT'),(301,'곽지해수욕장',242647,96304,102,'제주특별자치도 제주시 애월읍 곽지리','SPOT'),(302,'항파두리항몽유적지',252169,96342,102,'제주특별자치도 제주시 애월읍 상귀리 1012','SPOT'),(303,'카페 노티드 제주',243072,97652,102,'제주특별자치도 제주시 애월읍 애월리 2527-3 1, 2층','CAFE'),(305,'제주섭지회관',299955,93993,86,'제주특별자치도 서귀포시 성산읍 고성리 206-5','FOOD'),(306,'바다의집',298881,96777,86,'제주특별자치도 서귀포시 성산읍 오조리 797-1','FOOD'),(307,'맛나<b>식당</b>',299422,95273,86,'제주특별자치도 서귀포시 성산읍 고성리 316-9','FOOD'),(308,'아줄레주',292185,86281,86,'제주특별자치도 서귀포시 성산읍 신풍리 627 (도로명주소가 아닌 구주소로 검색하세요)','CAFE'),(309,'등경돌<b>식당</b>',301155,96812,86,'제주특별자치도 서귀포시 성산읍 성산리 187','FOOD'),(310,'윌라라',301005,96842,86,'제주특별자치도 서귀포시 성산읍 성산리 178-10','FOOD'),(312,'온더스톤브런치<b>카페</b> 제주<b>성산</b>점',299612,97673,86,'제주특별자치도 서귀포시 성산읍 오조리 374 H동 1, 2층','FOOD'),(313,'도렐 제주 본점',299622,95411,86,'제주특별자치도 서귀포시 성산읍 고성리 297-1 플레이스 내 LOVE동','CAFE'),(314,'서귀피안 베이커리',299953,93787,86,'제주특별자치도 서귀포시 성산읍 고성리 559-1 2F','CAFE'),(315,'아쿠아플라넷 제주',300510,93492,86,'제주특별자치도 서귀포시 성산읍 고성리 127-3 아쿠아플라넷 제주','FOOD'),(316,'섭지코지',300762,92505,86,'제주특별자치도 서귀포시 성산읍 고성리','SPOT'),(317,'광치기해변',300198,95550,86,'제주특별자치도 서귀포시 성산읍 고성리 224-33','SPOT'),(318,'빛의 벙커',297832,94316,86,'제주특별자치도 서귀포시 성산읍 고성리 2039-22','SPOT'),(319,'<b>성산</b>일출봉',301736,96390,86,'제주특별자치도 서귀포시 성산읍 성산리 1','FOOD'),(335,'원조교래손칼국수',277076,94153,104,'제주특별자치도 제주시 조천읍 교래리 491','FOOD'),(336,'성미가든',277181,94315,104,'제주특별자치도 제주시 조천읍 교래리','FOOD'),(337,'우동카덴',277390,94112,104,'제주특별자치도 제주시 조천읍 교래리 550-1','FOOD'),(338,'제주<b>맛집</b>칼국수',277390,94225,104,'제주특별자치도 제주시 조천읍 교래리 561-1','FOOD'),(339,'교래향',277112,94031,104,'제주특별자치도 제주시 조천읍 교래리 산56-1','FOOD'),(340,'<b>카페</b>갤러리',277020,92597,104,'제주특별자치도 제주시 조천읍 교래리 188-3','CAFE'),(341,'말로',276708,93192,104,'제주특별자치도 제주시 조천읍 교래리 619','CAFE'),(342,'여누<b>카페</b>',276862,93716,104,'제주특별자치도 제주시 조천읍 교래리 산61-1 1층 여누카페','CAFE'),(343,'<b>카페</b>델보스케',268415,79817,104,'제주특별자치도 서귀포시 상효동 1558','CAFE'),(344,'그루',265800,94255,104,'제주특별자치도 제주시 아라일동 385-12 카페 그루','CAFE');
+/*!40000 ALTER TABLE `travelapp_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelapp_placeimage`
+--
+
+DROP TABLE IF EXISTS `travelapp_placeimage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `travelapp_placeimage` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `src` varchar(200) DEFAULT NULL,
+  `index` int DEFAULT NULL,
+  `place_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `travelapp_placeimage_place_id_da32cfa0_fk_travelapp_place_id` (`place_id`),
+  CONSTRAINT `travelapp_placeimage_place_id_da32cfa0_fk_travelapp_place_id` FOREIGN KEY (`place_id`) REFERENCES `travelapp_place` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelapp_placeimage`
+--
+
+LOCK TABLES `travelapp_placeimage` WRITE;
+/*!40000 ALTER TABLE `travelapp_placeimage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `travelapp_placeimage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelapp_placetag`
+--
+
+DROP TABLE IF EXISTS `travelapp_placetag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `travelapp_placetag` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelapp_placetag`
+--
+
+LOCK TABLES `travelapp_placetag` WRITE;
+/*!40000 ALTER TABLE `travelapp_placetag` DISABLE KEYS */;
+INSERT INTO `travelapp_placetag` VALUES (1,'힐링'),(2,'체험'),(3,'감성'),(4,'맛집'),(5,'가성비'),(6,'호화'),(7,'흑돼지'),(8,'회'),(9,'고기국수'),(10,'전복'),(11,'술'),(12,'오션뷰'),(13,'가든뷰');
+/*!40000 ALTER TABLE `travelapp_placetag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelapp_region`
+--
+
+DROP TABLE IF EXISTS `travelapp_region`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `travelapp_region` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `region_small` varchar(20) NOT NULL,
+  `region_large` varchar(20) NOT NULL,
+  `position` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `travelapp_region_region_small_e44773f4_uniq` (`region_small`)
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelapp_region`
+--
+
+LOCK TABLES `travelapp_region` WRITE;
+/*!40000 ALTER TABLE `travelapp_region` DISABLE KEYS */;
+INSERT INTO `travelapp_region` VALUES (84,'남원읍','서귀포시','2'),(85,'대정읍','서귀포시','4'),(86,'성산읍','서귀포시','2'),(87,'안덕면','서귀포시','4'),(88,'표선면','서귀포시','2'),(89,'송산동','서귀포시','3'),(90,'정방동','서귀포시','3'),(91,'중앙동','서귀포시','3'),(92,'천지동','서귀포시','3'),(93,'효돈동','서귀포시','3'),(94,'영천동','서귀포시','3'),(95,'동홍동','서귀포시','3'),(96,'서홍동','서귀포시','3'),(97,'대륜동','서귀포시','3'),(98,'대천동','서귀포시','3'),(99,'중문동','서귀포시','3'),(100,'예래동','서귀포시','3'),(101,'한림읍','제주시','4'),(102,'애월읍','제주시','4'),(103,'구좌읍','제주시','2'),(104,'조천읍','제주시','2'),(105,'한경면','제주시','4'),(106,'추자면','제주시','1'),(107,'우도면','제주시','2'),(108,'일도1동','제주시','1'),(109,'일도2동','제주시','1'),(110,'이도1동','제주시','1'),(111,'이도2동','제주시','1'),(112,'삼도1동','제주시','1'),(113,'삼도2동','제주시','1'),(114,'용담1동','제주시','1'),(115,'용담2동','제주시','1'),(116,'건입동','제주시','1'),(117,'화북동','제주시','1'),(118,'삼양동','제주시','1'),(119,'붕개동','제주시','1'),(120,'아라동','제주시','1'),(121,'오라동','제주시','1'),(122,'연동','제주시','1'),(123,'노형동','제주시','1'),(124,'외도동','제주시','1'),(125,'이호동','제주시','1'),(126,'도두동','제주시','1');
+/*!40000 ALTER TABLE `travelapp_region` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `travelapp_tagtoplace`
+--
+
+DROP TABLE IF EXISTS `travelapp_tagtoplace`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `travelapp_tagtoplace` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `place_id_id` bigint NOT NULL,
+  `tag_id_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `travelapp_tagtoplace_place_id_id_0a22af11_fk_travelapp_place_id` (`place_id_id`),
+  KEY `travelapp_tagtoplace_tag_id_id_6ee9f720_fk_travelapp_placetag_id` (`tag_id_id`),
+  CONSTRAINT `travelapp_tagtoplace_place_id_id_0a22af11_fk_travelapp_place_id` FOREIGN KEY (`place_id_id`) REFERENCES `travelapp_place` (`id`),
+  CONSTRAINT `travelapp_tagtoplace_tag_id_id_6ee9f720_fk_travelapp_placetag_id` FOREIGN KEY (`tag_id_id`) REFERENCES `travelapp_placetag` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=299 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `travelapp_tagtoplace`
+--
+
+LOCK TABLES `travelapp_tagtoplace` WRITE;
+/*!40000 ALTER TABLE `travelapp_tagtoplace` DISABLE KEYS */;
+INSERT INTO `travelapp_tagtoplace` VALUES (1,1,4),(2,1,11),(3,2,4),(4,2,5),(5,3,4),(6,3,5),(7,4,4),(8,4,5),(9,5,4),(10,5,5),(11,18,3),(12,18,12),(13,19,3),(14,19,12),(15,20,3),(16,20,12),(17,21,3),(18,21,12),(19,22,3),(20,22,12),(21,23,2),(22,23,12),(23,24,1),(24,24,2),(25,24,13),(26,25,12),(27,26,5),(28,27,8),(29,27,11),(30,28,4),(31,28,5),(32,29,1),(33,30,4),(34,30,10),(35,200,2),(36,204,1),(37,204,3),(38,205,4),(39,205,5),(40,206,3),(41,207,3),(42,207,1),(43,208,12),(44,209,3),(45,210,5),(46,214,2),(47,216,2),(48,217,3),(49,218,4),(50,219,4),(51,220,3),(52,224,13),(53,225,13),(115,100,4),(116,100,12),(117,101,4),(118,101,12),(119,102,5),(120,103,5),(121,119,5),(122,120,3),(123,120,1),(124,121,2),(125,121,11),(126,122,5),(127,123,12),(128,123,2),(129,124,1),(130,124,8),(131,124,12),(132,125,12),(133,125,8),(134,126,12),(135,126,8),(136,127,3),(137,127,4),(138,127,11),(139,128,8),(140,128,12),(141,129,12),(142,129,8),(143,130,4),(144,130,5),(145,131,4),(146,132,4),(147,133,4),(148,134,3),(149,134,13),(150,135,1),(151,136,1),(152,136,3),(153,137,13),(154,137,1),(155,139,13),(156,140,1),(157,140,4),(158,141,4),(159,142,4),(160,143,11),(161,143,4),(162,144,4),(163,144,5),(164,146,4),(165,147,4),(166,147,5),(167,148,3),(168,149,3),(169,150,13),(170,150,1),(171,151,12),(172,151,1),(173,152,13),(174,153,1),(175,154,13),(176,155,4),(177,155,5),(178,156,11),(179,156,5),(180,157,4),(181,157,5),(182,158,4),(183,159,4),(184,162,4),(185,163,1),(186,164,3),(187,164,1),(188,165,1),(189,165,4),(190,166,4),(191,167,1),(192,167,2),(193,168,4),(194,168,5),(195,169,4),(196,169,5),(197,170,4),(198,171,4),(199,171,5),(200,172,4),(201,173,4),(202,174,13),(203,177,2),(204,177,3),(205,178,13),(206,178,1),(207,179,13),(208,179,1),(209,180,1),(210,180,4),(211,181,4),(212,181,5),(213,182,1),(214,182,3),(215,183,3),(216,184,3),(217,184,1),(218,185,2),(219,185,3),(220,186,4),(221,186,2),(222,187,2),(223,187,3),(224,188,13),(225,189,3),(226,190,4),(227,190,5),(228,191,3),(229,192,3),(230,193,3),(231,194,4),(232,195,5),(233,196,1),(234,196,3),(235,197,3),(236,197,4),(237,198,4),(238,199,12),(239,199,8),(284,227,12),(285,228,2),(286,228,12),(287,229,2),(288,230,1),(289,231,5),(290,232,9),(291,238,4),(292,244,1),(293,245,1),(294,246,4),(295,247,7),(296,248,7),(297,250,3),(298,253,4);
+/*!40000 ALTER TABLE `travelapp_tagtoplace` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `userapp_user`
+--
+
+DROP TABLE IF EXISTS `userapp_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userapp_user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime(6) DEFAULT NULL,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `person_type` varchar(2) DEFAULT NULL,
+  `select_view` tinyint(1) DEFAULT NULL,
+  `select_cafe` tinyint(1) DEFAULT NULL,
+  `select_drink` tinyint(1) DEFAULT NULL,
+  `select_food` tinyint(1) DEFAULT NULL,
+  `select_activity` tinyint(1) DEFAULT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_admin` tinyint(1) NOT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userapp_user`
+--
+
+LOCK TABLES `userapp_user` WRITE;
+/*!40000 ALTER TABLE `userapp_user` DISABLE KEYS */;
+INSERT INTO `userapp_user` VALUES (3,'pbkdf2_sha256$390000$fEUZn2PIGiYXwmsCBxbGjO$ri4RPC3fMNlEUZjTUo2i0vsaHw77aodTp7XSjrA8my8=','2022-11-05 17:37:55.854758','test','test@test.com','a',0,0,0,0,0,1,0,0),(4,'pbkdf2_sha256$390000$Bcl6LuXjDlaicOEqMUxiwt$PXBOk//aUoHbXwa71Toa7PpVpJJnJN2mFGqr2HJ11to=','2022-11-06 02:58:29.077404','admin','admin@admin.com',NULL,NULL,NULL,NULL,NULL,NULL,1,1,1);
+/*!40000 ALTER TABLE `userapp_user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-11-06  5:17:19
